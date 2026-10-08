@@ -1,6 +1,5 @@
 ## Communication happens through UNIX sockets
 import socket
-import sys
 import os, errno
 
 class Socket:
@@ -51,28 +50,3 @@ class Socket:
         self.conn.close()
         if self.player == 'bob':
             os.remove(buffer_dir + buffer_file_name)
-
-# test
-if (__name__ == "__main__"):
-    MSG = {
-        'bob': b'I love you so so very much',
-        'alice':   b'I love you too my darling'
-    }
-
-    player = sys.argv[1]
-    sock = Socket(player, './buffer')
-
-    if (player == 'bob'): # bob sends first
-        sock.send(MSG['bob'])
-        message = sock.recv(len(MSG['alice'])).decode()
-        print(message)
-        sock.close()
-
-    elif (player == 'alice'): # alice sends second
-        message = sock.recv(len(MSG['bob'])).decode()
-        print(message)
-        sock.send(MSG['alice'])
-        sock.close()
-
-    else:
-        raise
